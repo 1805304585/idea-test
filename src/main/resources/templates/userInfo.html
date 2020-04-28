@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<head>
+    <meta charset="UTF-8">
+    <title>user</title>
+</head>
+<body>
+<h1>人员信息</h1>
+
+<form action="/search" method="get">
+    <input id="search" name="search" placeholder="姓名/电话">
+    <input type="submit" value="搜    索">
+    <button><a href="/addUserPage">添加人员</a></button>
+</form>
+<table border="1px solid pink">
+    <thead>
+    <tr>
+        <th>员工名称</th>
+        <th>员工部门</th>
+        <th>员工邮箱</th>
+        <th>员工电话</th>
+        <th>状态</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="uservo : ${users}">
+        <td th:text="${uservo.username}"></td>
+        <td th:text="${uservo.dname}"></td>
+        <td th:text="${uservo.email}"></td>
+        <td th:text="${uservo.phonenum}"></td>
+        <td th:if="${uservo.status} == 1">正常</td>
+        <td th:if="${uservo.status} == 2">禁用</td>
+    </tr>
+    </tbody>
+</table>
+</body>
+</html>

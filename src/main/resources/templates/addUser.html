@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<head>
+    <meta charset="UTF-8">
+    <title>addUser</title>
+</head>
+<body>
+<!--百度jquery CDN-->
+<script src="https://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+<script type="text/javascript">
+    $(function () {
+        $.get("/getDepts", function (data) {
+            if(data.length > 0) {
+                for(var i = 0; i < data.length; i++) {
+                    $("#dept_select").append(
+                        "<option value='"+data[i].deptid+"'>"+data[i].dname+"</option>"
+                    );
+                }
+            } else {
+                alert("dept暂无数据！！");
+            }
+        })
+    });
+</script>
+<h1>添加人员信息</h1>
+<form action="/addUser" method="post">
+    员工名称:
+    <input type="text" name="username" />
+    <br />
+    所属部门:
+    <select id="dept_select" name="deptid">
+    </select>
+    <br />
+    员工邮箱:
+    <input type="text" name="email" />
+    <br />
+    员工电话:
+    <input type="text" name="phonenum" />
+    <br />
+    员工初始状态:
+    <select name="status">
+        <option value="1">正常</option>
+        <option value="2">禁用</option>
+    </select>
+    <br />
+    <input type="submit" value="保存并提交" />
+    <br />
+</form>
+</body>
+</html>

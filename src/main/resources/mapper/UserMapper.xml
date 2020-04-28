@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.lianglongwei.mapper.UserMapper" >
+  <resultMap id="BaseResultMap" type="com.lianglongwei.model.User" >
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="userid" property="userid" jdbcType="INTEGER" />
+    <result column="username" property="username" jdbcType="VARCHAR" />
+    <result column="deptid" property="deptid" jdbcType="INTEGER" />
+    <result column="email" property="email" jdbcType="VARCHAR" />
+    <result column="phonenum" property="phonenum" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="INTEGER" />
+  </resultMap>
+  <select id="getAllUsers" resultType="UserVo">
+    select u.*,d.dname,d.remark from tb_user u INNER JOIN tb_dept d on u.deptid = d.deptid
+  </select>
+  <select id="searchUser" resultType="UserVo">
+     select u.*,d.dname,d.remark from tb_user u INNER JOIN tb_dept d on u.deptid = d.deptid
+     <where>
+       <if test="key!=null">
+         phonenum like '%${key}%' or username like '%${key}%'
+       </if>
+     </where>
+  </select>
+</mapper>
