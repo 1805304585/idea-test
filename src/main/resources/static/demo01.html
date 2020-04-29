@@ -1,10 +1,180 @@
 <!DOCTYPE html>
-<html lang="en">
+
+<html>
+
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+
+    <meta charset="utf-8">
+
+    <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no">
+
+    <title>Intro to graphics - 4.10</title>
+
+    <script type="text/javascript" src="http://ajax.microsoft.com/ajax/jquery/jquery-1.4.min.js"></script>
+
+    <link rel="stylesheet" href="https://js.arcgis.com/4.10/esri/css/main.css">
+
+    <script src="https://js.arcgis.com/4.10/"></script>
+
+     
+
+    <style>
+
+        html,
+
+        body,
+
+        #viewDiv {
+
+            padding: 0;
+
+            margin: 0;
+
+            height: 100%;
+
+            width: 100%;
+
+        }
+
+    </style>
+
+     
+
+    <script>
+
+        require([
+
+            "esri/Map",
+
+            "esri/views/MapView",
+
+            "esri/layers/TileLayer",
+
+            "esri/Graphic"
+
+        ], function(
+
+            Map, MapView, TileLayer,Graphic
+
+        ) {
+
+            var housingLayer = new TileLayer({
+
+                url:"https://server.arcgisonline.com/ArcGIS/rest/services/Reference/World_Transportation/MapServer",
+
+                id: "ny-housing",
+
+                opacity: 0.9
+
+            })
+
+
+
+
+            var map = new Map({
+
+                basemap: "streets",
+
+                layers: [housingLayer]
+
+            });
+
+
+
+            var view = new MapView({
+
+                center: [118.55019107002441,29.300640724771107],
+
+                container: "viewDiv",
+
+                map: map,
+
+                zoom: 4
+
+            });
+
+            var markerSymbol = {
+
+                type: "simple-marker", // autocasts as new SimpleMarkerSymbol()
+
+                color: [226, 119, 40],
+
+                outline: { // autocasts as new SimpleLineSymbol()
+
+                    color: [255, 255, 255],
+
+                    width: 2
+
+                }
+
+            };
+
+
+
+            $(function (){
+
+                $.getJSON("./heat.json",function(data){
+
+                    $.each(data,function(index,info){
+
+                        x =info.x;
+
+                        y =info.y;
+
+                        var point = {
+
+                            type: "point", // autocasts as new Point()
+
+                            longitude: x,
+
+                            latitude: y
+
+                        };
+
+                        var pointGraphic = new Graphic({
+
+                            geometry: point,
+
+                            symbol: markerSymbol
+
+                        });
+
+                        view.graphics.add(pointGraphic);
+
+                    });
+
+                })
+
+            });
+
+//监听图层加载完成事件，缩放到图层范围
+
+// view.when(function() {
+
+// housingLayer.when(function() {//es6语法
+
+// view.goTo(housingLayer.fullExtent);
+
+// });
+
+// });
+
+
+
+        });
+
+    </script>
+
 </head>
+
+ 
+
 <body>
 
+<div id="viewDiv"></div>
+
 </body>
+
+ 
+
 </html>
